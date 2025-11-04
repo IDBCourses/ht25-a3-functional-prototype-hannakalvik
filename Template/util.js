@@ -2,6 +2,9 @@
  * The default DOM element used by the utilities when no element is provided.
  * This selects the element with id "thing0" if present.
  * @type {HTMLElement|null}
+ * 
+ * Haven't used this one but kept it in case
+ * 
  */
 export const thing = document.querySelector("#thing0");
 

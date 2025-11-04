@@ -5,10 +5,9 @@
  * Programming 2025, Interaction Design Bachelor, Malmö University
  *
  * Structure adapted from template with `state`, `settings`, `update`, `render`, `setup`.
- * Game logic based on interactive balance challenge: vowel/consonant key control.
+ * Game logic based on interactive balance challenge: vowel/consonant/space key control.
  */
 
-// Settings
 // All constant values that never change during the game
 // Object.freeze() prevents accidental changes to these values
 const settings = Object.freeze({
@@ -78,8 +77,8 @@ function updateState(newState) {
 
 // Scales a value between 0-1 (used for the balance process)
 function scale(num, min, max) {
-  if (num < min) return 0;      // Below minimum = 0%
-  if (num > max) return 1;      // Above maximum = 100%
+  if (num < min) return 0;          // Below minimum = 0%
+  if (num > max) return 1;          // Above maximum = 100%
   return (num - min) / (max - min); // Calculate percentage in between
 }
  
@@ -151,7 +150,7 @@ function update() {
   // Checks ball position
   // Calculate how far ball is from center
   const distanceFromCenter = Math.abs(ball.x - settings.centerX);
-  const isDanger = distanceFromCenter > settings.dangerZone;   // Far from center?
+  const isDanger = distanceFromCenter > settings.dangerZone;    // Far from center?
   const isBalanced = distanceFromCenter < settings.balanceZone; // Very close to center?
 
   // Handle balancing (green zone)
@@ -173,7 +172,7 @@ function update() {
       winGame();
     } else {
       // Show green ball and progress
-      settings.ball.style.backgroundColor = '#10b981'; // Green
+      settings.ball.style.backgroundColor = '#10b981';    // Green
       settings.ball.style.boxShadow = '0 0 20px #10b981'; // Green glow
       settings.scoreDisplay.textContent = `Balancing... ${progress}%`;
     }
@@ -185,7 +184,7 @@ function update() {
     
     if (isDanger) {
       // Ball is in danger zone (far from center)
-      settings.ball.style.backgroundColor = '#ef4444'; // Red
+      settings.ball.style.backgroundColor = '#ef4444';    // Red
       settings.ball.style.boxShadow = '0 0 20px #ef4444'; // Red glow
     } else {
       // Ball is in normal zone
@@ -247,21 +246,21 @@ function resetGame() {
   // Reset all state values to initial state
   updateState({
     ball: { 
-      x: settings.ballStartX, 
-      y: settings.ballStartY, 
-      velocityX: 0, 
-      velocityY: 0, 
-      isFalling: false 
+      x: settings.ballStartX,    // Put the ball back at starting X position
+      y: settings.ballStartY,    // Put the ball back at starting Y position
+      velocityX: 0,              // Stop any horizonatal movement
+      velocityY: 0,              // Stop any vertical movement
+      isFalling: false           // Ball is not falling at the start
     },
     beam: { 
-      tilt: 0, 
-      targetTilt: 0 
+      tilt: 0,      // Reset beam angle to flat
+      targetTilt: 0 // Target angle also starts flat
     },
     keysPressed: new Set(),           // Clear all pressed keys
-    score: 0,
+    score: 0,                         // Reset score to 0
     startTime: performance.now(),     // Reset start time
-    isWon: false,
-    balanceStartTime: null,
+    isWon: false,                     // Player has'nt won yet
+    balanceStartTime: null,           // Reset balance timer
   });
 
   // Reset visual elements
@@ -294,8 +293,7 @@ function onKeyUp(e) {
   // Remove key from pressed keys
   state.keysPressed.delete(key);
 }
-
-// SETUP 
+ 
 // Setup function - runs once when page loads
 function setup() {
   // Add event listeners for keyboard input
@@ -308,7 +306,7 @@ function setup() {
   // Initialize game
   resetGame();  // Set initial state
   update();     // Start game logic loop
-  render();        // Start render loop
+  render();     // Start render loop
 }
 
 // Start everything when page loads
