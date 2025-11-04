@@ -1,10 +1,8 @@
 /*
  * Assignment 3: Functional Prototype
+ * Hanna Kalvik
  *
  * Programming 2025, Interaction Design Bachelor, Malmö University
- *
- * This assignment is written by:
- * Hanna Kalvik
  *
  * Structure adapted from template with `state`, `settings`, `update`, `render`, `setup`.
  * Game logic based on interactive balance challenge: vowel/consonant key control.
@@ -39,7 +37,7 @@ const settings = Object.freeze({
   // Timing
   updateInterval: 10,     // How often to update game logic (in milliseconds)
   
-  // DOM Elements - reference to HTML elements we need to control
+  // DOM Elements - reference to HTML elements
   ball: document.getElementById('ball'),
   beam: document.getElementById('beam'),
   scoreDisplay: document.getElementById('score'),
@@ -50,7 +48,6 @@ const settings = Object.freeze({
   rightIndicator: document.getElementById('rightIndicator'),
 });
 
-// State 
 // All values that change during gameplay
 // Object.freeze() ensures we use updateState() to modify state (immutable pattern)
 let state = Object.freeze({
@@ -73,8 +70,8 @@ let state = Object.freeze({
   highScore: 0,                 // Best score ever achieved
 });
  
-// Update state with new values
 // Updates state without changing the old one directly
+// Freeze it to keep everything stable
 function updateState(newState) {
   state = Object.freeze({ ...state, ...newState });
 }
@@ -93,8 +90,7 @@ function update() {
 
   // Pull out some values from the state
   let { ball, beam, keysPressed, balanceStartTime } = state;
-
-  // COUNT KEY PRESSES 
+ 
   // Count how many vowels and consonants are currently pressed
   let vowelPressure = 0;
   let consonantPressure = 0;
@@ -212,7 +208,7 @@ function update() {
   updateState({ ball, beam, balanceStartTime });
   
   // Schedule next update
-  setTimeout(update, settings.updateInterval);
+  window.requestAnimationFrame(update);
 }
 
 // Updates how everything looks on screen (60 times/sec)
@@ -242,7 +238,7 @@ function winGame() {
   // Display win message
   settings.finalScoreDisplay.textContent = `You Made It! Time: ${score}s`;
   
-  // Show game over screen
+  // Show game over (You Win!) screen
   settings.gameOverScreen.style.display = 'flex';
 }
 
@@ -283,7 +279,7 @@ function onKeyDown(e) {
 
   //Spacebar: quick brake - slows ball down by cutting speed in half
   if (key === ' ' && !state.isWon) {
-   state.ball.velocityX *= 0.8 // Cut speed 20%
+   state.ball.velocityX *= 0.5 // Cut speed 50%
    return; // Don't add spacebar to regular keys
   }
   
