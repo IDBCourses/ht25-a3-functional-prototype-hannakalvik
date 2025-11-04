@@ -1,19 +1,91 @@
 <!DOCTYPE html>
-<html lang="en">
+<!-- 
+  Balance Beam Game - HTML Structure
+  -----------------------------------
+  This file defines the structure and elements of the game.
+  All visual styling is in style.css, all logic is in script.js.
+-->
 
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src="script.js" type="module"></script>
-    <link rel="stylesheet" href="style.css">
-    <title>Code Playground</title>
+  <!-- UTF-8 helps the computer read and show all the text correctly -->
+  <meta charset="UTF-8">
+  
+  <!-- Makes the page responsive on mobile devices -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <!-- Page title shown in browser tab -->
+  <title>Balance Beam Game</title>
+  
+  <!-- Link to CSS file for styling -->
+  <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
-
-    <div id="thing0" class="thing"></div>
-
+  <!-- Score display -->
+  <!-- Shows current score in top-left corner -->
+  <!-- JavaScript updates the text content to show time survived -->
+  <div id="score">Score: 0s</div>
+  
+  <!-- Instructions -->
+  <!-- Instructions shown at top-center of screen -->
+  <div id="instructions">
+    <!-- Main instruction line -->
+    <p>Vowels (A,E,I,O,U,Y) tilt left | Consonants tilt right | SPACE to brake</p>
+    
+    <!-- Secondary instruction with class="small" for smaller text -->
+    <p class="small">Balance the ball in the center to win!</p>
+  </div>
+  
+  <!-- Game container -->
+  <!-- Main game area - contains beam, ball, pivot, and indicators -->
+  <!-- This creates the dark blue box in the center of the screen -->
+  <div id="gameContainer">
+    
+    <!-- The Beam - gray horizontal line that tilts -->
+    <!-- JavaScript rotates this element based on key presses -->
+    <div id="beam"></div>
+    
+    <!-- Center Pivot - small gray circle at center of beam -->
+    <!-- Visual indicator of rotation point -->
+    <div id="pivot"></div>
+    
+    <!-- The Ball - blue circle that rolls on the beam -->
+    <!-- JavaScript moves this element and changes its color:
+         - Blue = normal
+         - Red = danger (near edge)
+         - Green = balanced (near center) -->
+    <div id="ball"></div>
+    
+    <!-- Key press indicators -->
+    <!-- Left indicator - shows when vowels are pressed -->
+    <!-- The arrow (←) and word "VOWELS" tell player what these keys do -->
+    <div id="leftIndicator" class="key-indicator">← VOWELS</div>
+    
+    <!-- Right indicator - shows when consonants are pressed -->
+    <!-- The arrow (→) and word "CONSONANTS" tell player what these keys do -->
+    <div id="rightIndicator" class="key-indicator">CONSONANTS →</div>
+  </div>
+  
+  <!-- Game over screen -->
+  <!-- Dark overlay shown when player wins or loses -->
+  <!-- Hidden by default (CSS: display: none), shown by JavaScript -->
+  <div id="gameOver">
+    
+    <!-- "Game Over!" heading -->
+    <h2>You Won!</h2>
+    
+    <!-- Final score text - JavaScript updates this with actual score -->
+    <p id="finalScore">Final Score: 0s</p>
+    
+    <!-- Restart button - clicking this resets the game -->
+    <!-- JavaScript adds event listener to this button -->
+    <button id="restartBtn">Play Again</button>
+  </div>
+  
+  <!-- JavaScript -->
+  <!-- Link to JavaScript file containing all game logic -->
+  <!-- Must be at end of body so all HTML elements exist before script runs -->
+  <script src="script.js"></script>
 </body>
-
 </html>
