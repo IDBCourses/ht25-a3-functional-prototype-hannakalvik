@@ -5,9 +5,17 @@
 
 import * as Util from "./util.js";
 
-// State variables are the parts of your program that change over time.
+// Settings
+const settings = {
+  sequence: ["a", "s", "d", "f", "g", "h", "j", "k", "l"]
+};
 
-// Settings variables should contain all of the "fixed" parts of your programs
+//State
+const state = {
+  pressed [], // Array that saves the key input
+  lastKey:"" 
+};
+
 
 // Code that runs over and over again
 function loop() {
@@ -17,7 +25,8 @@ function loop() {
 
 // Setup is run once, at the start of the program. It sets everything up for us!
 function setup() {
-  // Put your event listener code here
+
+  document.addEventListener("keydown", onKey);
 
   window.requestAnimationFrame(loop);
 }
