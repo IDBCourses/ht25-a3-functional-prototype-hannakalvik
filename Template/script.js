@@ -7,13 +7,13 @@ import * as Util from "./util.js";
 
 // Settings
 const settings = {
-  sequence: ["a", "s", "d", "f", "g", "h", "j", "k", "l"]
+  sequence: ["a", "s", "d", "f", "g", "h", "j", "k", "l"],
   needed: 3 // 3 completed swipes are needed
 };
 
 //State
 const state = {
-  pressed [], // Array that saves the key input
+  pressed: [], // Array that saves the key input
   lastKey:"" 
   progress: 0 //How many times the gesture is correct
 };
@@ -48,8 +48,8 @@ function onKey(event) {
 
 // Logic for the keyboard inputs 
 function checkSwipe() { //check if the array is correct 
-  let correct: true;
-  for (let i = 0; i < state.pressed.legth; i++) {
+  let correct = true;
+  for (let i = 0; i < state.pressed.length; i++) {
     if (state.pressed[i] !== settings.sequence[i]) { // [i] = "hämta plats nummer i"
       correct = false; //when it finds some key that isn't in the array it turns true into false
    }
@@ -57,17 +57,20 @@ function checkSwipe() { //check if the array is correct
 
   if (!correct) { 
     state.pressed = []; //if it's false, empty the array and start over
+    document.getElementById("status").innerHTML = "Wrong key! Start over.";
+  } else {
+    document.getElementById("status").innerHTML = "Swipe in progress...";
   }
 
-  if (state.pressed.lenght === settings.sequence.lenght) {
+  if (state.pressed.lenght === settings.sequence.length) {
     state.progress++;
-    console.log("Gest Complete. Progress: " + state.progress);
+    document.getElementById("status").innerHTML = "Gesture complete!";
+    document.getElementById("progress").innerHTML =
+        "Progress: " + state.progress + " / " + settings.needed;
     state.pressed = []; // if everything is correct in the array, the gesture is done
   }
-}
 
-if (key === " ") {
-  tryOpen();
+  document.getElementById("logg").innerHTML = state.pressed.join(", ");
 }
 
 function tryOpen() {
