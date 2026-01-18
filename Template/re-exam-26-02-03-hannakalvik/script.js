@@ -27,7 +27,6 @@ function loop() {
 function setup() {
   // Add event listener for key presses
   document.addEventListener("keydown", onKey);
-  
   // Start the loop
   window.requestAnimationFrame(loop);
 }
@@ -37,9 +36,6 @@ function onKey(event) {
   const key = event.key.toLowerCase(); // event.key = which key. toLowerCase() makes it case-insensitive
   state.lastKey = key;
   state.pressed.push(key); // puts the newest value last in the array
-
-  console.log("Tangent tryckt: ", key); // ← här ser du varje tryck
-  console.log("Array just nu: ", state.pressed);
 
   // Update log immediately
   document.getElementById("logg").innerHTML = state.pressed.join(", "); 
@@ -59,8 +55,8 @@ function checkSwipe() { // check if the array is correct
 
   // Loop through the pressed keys and compare with the expected sequence
   for (let i = 0; i < state.pressed.length; i++) {
-    if (state.pressed[i] !== settings.sequence[i]) { // [i] = "hämta plats nummer i"
-      correct = false; // when it finds some key that isn't in the array it turns true into false
+    if (state.pressed[i] !== settings.sequence[i]) { 
+      correct = false; // when it finds a wrong key
     }
   }
 
@@ -68,12 +64,12 @@ function checkSwipe() { // check if the array is correct
   const progressEl = document.getElementById("progress");
 
   if (!correct) { 
-    state.pressed = []; // if it's false, empty the array and start over
+    state.pressed = []; // if wrong, start over
     statusEl.innerHTML = "Wrong key! Start over.";
     statusEl.style.color = "red";
   } else if (state.pressed.length < settings.sequence.length) {
     statusEl.innerHTML = "Swipe in progress...";
-    statusEl.style.color = "black";
+    statusEl.style.color = "white";
   }
 
   // if gesture is complete
@@ -81,22 +77,35 @@ function checkSwipe() { // check if the array is correct
     state.progress++;
     statusEl.innerHTML = "Gesture complete!";
     statusEl.style.color = "green";
-    progressEl.innerHTML =
-        "Progress: " + state.progress + " / " + settings.needed;
-    state.pressed = []; // if everything is correct in the array, the gesture is done, reset for the next swipe
-  }
-}
+    progressEl.innerHTML = "Progress: " + state.progress + " / " + settings.needed;
+    state.pressed = []; // reset for next swipe
+
+    // Show text under the door if needed progress reached
+    if (state.progress >= settings.needed) {
+      const doorText = document.getElementById("doorText");
+      doorText.style.display = "block";
+      doorText.innerHTML = "Press SPACE to open the door";
+    }
+  } 
+} 
+
 
 // Try open door
 function tryOpen() {
   const statusEl = document.getElementById("status");
   const progressEl = document.getElementById("progress");
+  const door = document.getElementById("door");
+  const doorText = document.getElementById("doorText");
 
   if (state.progress >= settings.needed) {
-    statusEl.innerHTML = "Door open! You escaped!";
+    door.style.backgroundColor = "yellow";
+    doorText.innerHTML = "";
+    statusEl.innerHTML = "Door opened! You escaped!";
     statusEl.style.color = "green";
-    state.progress = 0;
-    progressEl.innerHTML = "Progress: " + state.progress + " / " + settings.needed;
+
+      state.progress = 0;
+      progressEl.innerHTML = "Progress: " + state.progress + " / " + settings.needed;
+      document.removeEventListener("keydown", openDoor);
   } else {
     statusEl.innerHTML = "Not enough charge yet. Keep swiping!";
     statusEl.style.color = "red";

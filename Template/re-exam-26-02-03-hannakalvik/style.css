@@ -1,28 +1,52 @@
-.thing {
-    width: 100px;
-    height: 100px;
-    background-color: deeppink;
-    position: absolute;
-    border-radius: 50%;
-}
-
-/* Prevent padding and border from affecting element width. */
-*,
-::before,
-::after {
-    box-sizing: border-box;
-}
-
-/* Remove the margin in all browsers */
+/* Center everything on the screen */
 body {
-    margin: 0;
-    padding: 0;
-    line-height: inherit;
-    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  margin: 0;
+  font-family: system-ui, sans-serif;
+  background-color: #222; /* dark background for prison feel */
+  color: white;
+  text-align: center;
 }
 
-#sample-output {
-    position: fixed;
-    border-radius: 100%;
-    background-color: orange;
+/* Status, progress, and log text */
+#status, #progress, #logg {
+  margin: 10px 0;
+}
+
+/* Door rectangle */
+#door {
+  width: 200px;
+  height: 300px;
+  background-color: #555;
+  border: 4px solid #333;
+  border-radius: 5px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-top: 20px;
+  position: relative;
+}
+
+/* Keyhole triangle */
+#keyhole {
+  width: 0;
+  height: 0;
+  border-left: 15px solid transparent;
+  border-right: 15px solid transparent;
+  border-bottom: 25px solid yellow;
+  position: absolute;
+  right: 30px;
+  top: 140px;
+}
+
+/* Instruction text under the door */
+#doorText {
+  display: none;
+  margin-top: 10px;
+  color: white;
 }
