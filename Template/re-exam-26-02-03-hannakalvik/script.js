@@ -15,7 +15,8 @@ const settings = {
 const state = {
   pressed: [], // Array that saves the key input
   lastKey: "", 
-  progress: 0 // How many times the gesture is correct
+  progress: 0, // How many times the gesture is correct
+  mode: "playing"
 };
 
 // Loop
@@ -33,7 +34,18 @@ function setup() {
 
 // Event handler
 function onKey(event) {
+
   const key = event.key.toLowerCase(); // event.key = which key. toLowerCase() makes it case-insensitive
+
+  if (state.mode === "finished") {
+    return;
+  }
+
+
+  if (state.mode === "waiting" && key !== " ") {
+    return;
+  }
+
   state.lastKey = key;
   state.pressed.push(key); // puts the newest value last in the array
 
@@ -85,6 +97,8 @@ function checkSwipe() { // check if the array is correct
       const doorText = document.getElementById("doorText");
       doorText.style.display = "block";
       doorText.innerHTML = "Press SPACE to open the door";
+
+      state.mode = "waiting";
     }
   } 
 } 
@@ -92,6 +106,10 @@ function checkSwipe() { // check if the array is correct
 
 // Try open door
 function tryOpen() {
+
+  if (state.mode !== "waiting") {
+    return;
+  }
   const statusEl = document.getElementById("status");
   const progressEl = document.getElementById("progress");
   const door = document.getElementById("door");
@@ -103,9 +121,10 @@ function tryOpen() {
     statusEl.innerHTML = "Door opened! You escaped!";
     statusEl.style.color = "green";
 
+    state.mode = "finished";
+
       state.progress = 0;
       progressEl.innerHTML = "Progress: " + state.progress + " / " + settings.needed;
-      document.removeEventListener("keydown", openDoor);
   } else {
     statusEl.innerHTML = "Not enough charge yet. Keep swiping!";
     statusEl.style.color = "red";
