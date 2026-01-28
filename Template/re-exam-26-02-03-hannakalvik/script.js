@@ -13,8 +13,8 @@ const settings = {
 
 // State
 const state = {
-  pressed: [], // Array that saves the key input
-  lastKey: "", 
+  pressed: [], // Array that saves the key input - which keys has been pressed
+  lastKey: "", // last key that was pressed
   progress: 0, // How many times the gesture is correct
   mode: "playing"
 };
