@@ -5,24 +5,29 @@
 
 import * as Util from "./util.js";
 
-// Settings
+// Settings (configuration, constants, game rules)
 const settings = {
   sequence: ["a", "s", "d", "f", "g", "h", "j", "k", "l"],
   needed: 3 // 3 completed swipes are needed
 };
 
-// State
+// State (dynamic data that changes during runtime)
 const state = {
-  pressed: [], // Array that saves the key input - which keys has been pressed
-  lastKey: "", // last key that was pressed
-  progress: 0, // How many times the gesture is correct
+  pressed: [], // Which keys has been pressed
+  lastKey: "", // Last key that was pressed
+  progress: 0, 
   mode: "playing"
 };
 
-// Loop
+// Loop (runs continously using requestAnimationFrame, only visuals)
 function loop() {
+  const progressEl = document.getElementById("progress");
+  if (progressEl) {
+    progressEl.innerHTML = "Progress: " + state.progress + " / " + settings.needed;
+  }
   window.requestAnimationFrame(loop);
 }
+
 
 // Setup
 function setup() {
@@ -73,10 +78,9 @@ function checkSwipe() { // check if the array is correct
   }
 
   const statusEl = document.getElementById("status");
-  const progressEl = document.getElementById("progress");
 
   if (!correct) { 
-    state.pressed = []; // if wrong, start over
+    state.pressed = []; // if wrong, reset and start over
     statusEl.innerHTML = "Wrong key! Start over.";
     statusEl.style.color = "red";
   } else if (state.pressed.length < settings.sequence.length) {
@@ -89,7 +93,6 @@ function checkSwipe() { // check if the array is correct
     state.progress++;
     statusEl.innerHTML = "Gesture complete!";
     statusEl.style.color = "green";
-    progressEl.innerHTML = "Progress: " + state.progress + " / " + settings.needed;
     state.pressed = []; // reset for next swipe
 
     // Show text under the door if needed progress reached
@@ -104,7 +107,7 @@ function checkSwipe() { // check if the array is correct
 } 
 
 
-// Try open door
+// Try open door function
 function tryOpen() {
 
   if (state.mode !== "waiting") {
